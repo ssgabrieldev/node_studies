@@ -1,10 +1,9 @@
 FROM node
 
-WORKDIR .
+WORKDIR /app
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
-COPY src src
 
 ENV PORT=3000
 
