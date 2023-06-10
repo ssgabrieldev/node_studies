@@ -1,5 +1,6 @@
 module.exports = {
   user: {
-    create: async () => {}
+    create: async () => {},
+    findFirst: async () => {}
   }
 }

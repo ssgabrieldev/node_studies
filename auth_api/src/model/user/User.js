@@ -15,18 +15,39 @@ module.exports = class User {
   }
 
   async save() {
-    const user = await DBConnection.connection.user.create({
-      data: {
-        username: this.data.username,
-        email: this.data.email,
-        password: this.data.password
-      }
-    });
+    const user = await DBConnection
+      .connection
+      .user
+      .create({
+        data: {
+          username: this.data.username,
+          email: this.data.email,
+          password: this.data.password
+        }
+      });
 
     this.data.id = user.id;
 
     return this;
   }
 
-  async find() { }
+  async find() {
+    const where = {};
+    const {
+      email
+    } = this.data;
+
+    if (email) {
+      where.email = email;
+    }
+
+    const user = await DBConnection
+      .connection
+      .user
+      .findFirst({
+        where
+      });
+
+    return user;
+  }
 }
