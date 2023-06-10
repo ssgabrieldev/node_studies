@@ -5,6 +5,23 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
+    depends_on:
+      - database
+    networks:
+      - app
+
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: auth_api
+      POSTGRES_USER: auth_api
+    networks:
+      - app
 
 volumes:
+  app:
+
+networks:
   app:

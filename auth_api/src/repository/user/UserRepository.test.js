@@ -1,12 +1,18 @@
+const DBConection = require("../../db/DBConetion");
+const MockDBConnection = require("../../db/MockDBConnection");
 const User = require("../../model/user/User");
 const UserUtils = require("../../utils/test/UserUtils");
 const UserRepository = require("./UserRepository");
 
 describe("User Repository", () => {
+  DBConection.setConnection(MockDBConnection);
+
   it("should not fail if user not exists", async () => {
     const data = UserUtils.mock();
-    const spyFind = jest.spyOn(User.prototype, "find")
+    jest.spyOn(User.prototype, "find")
       .mockReturnValue(null);
+    jest.spyOn(DBConection.connection.user, "create")
+      .mockReturnValue(data);
 
     const userRepository = new UserRepository(
       User
@@ -18,13 +24,11 @@ describe("User Repository", () => {
       expect(result[key])
         .toBe(data[key]);
     });
-
-    spyFind.mockRestore();
   });
 
   it("should fail if user exists", async () => {
     const data = UserUtils.mock();
-    const spyFind = jest.spyOn(User.prototype, "find")
+    jest.spyOn(User.prototype, "find")
       .mockReturnValue(data);
 
     const userRepository = new UserRepository(
@@ -36,7 +40,5 @@ describe("User Repository", () => {
     expect(result)
       .rejects
       .toThrow();
-
-    spyFind.mockRestore();
   });
 });

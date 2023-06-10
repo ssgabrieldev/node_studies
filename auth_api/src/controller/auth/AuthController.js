@@ -1,5 +1,18 @@
 module.exports = class AuthController {
-  handler(req, res) {
-    res.send("Hello World");
+  userRepository;
+
+  constructor(userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  async handler(req, res) {
+    const {
+      password,
+      ...user
+    } = await this.userRepository.insert(req.body.user);
+
+    return res.json({
+      user
+    });
   }
 }

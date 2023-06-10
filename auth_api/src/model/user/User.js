@@ -1,3 +1,5 @@
+const DBConnection = require("../../db/DBConetion");
+
 module.exports = class User {
   data = {
     id: 0,
@@ -13,8 +15,18 @@ module.exports = class User {
   }
 
   async save() {
+    const user = await DBConnection.connection.user.create({
+      data: {
+        username: this.data.username,
+        email: this.data.email,
+        password: this.data.password
+      }
+    });
+
+    this.data.id = user.id;
+
     return this;
   }
 
-  async find() {}
+  async find() { }
 }
