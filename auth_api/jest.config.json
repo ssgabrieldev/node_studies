@@ -3,5 +3,10 @@
   "collectCoverage": true,
   "coverageDirectory": "coverage",
   "coverageProvider": "v8",
-  "testEnvironment": "jest-environment-node"
+  "testEnvironment": "jest-environment-node",
+  "coverageThreshold": {
+    "global": {
+      "lines": 100
+    }
+  }
 }
