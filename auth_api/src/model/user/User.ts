@@ -1,17 +1,19 @@
-const DBConnection = require("../../db/DBConetion");
+import DBConnection from "../../db/DBConetion";
+import UserData from "./interface";
 
-module.exports = class User {
-  data = {
+export default class User {
+  data: UserData = {
     id: 0,
     username: "",
     email: "",
-    password: "",
+    password: ""
   };
 
-  constructor(data) {
-    Object.keys(data).forEach((key) => {
-      this.data[key] = data[key];
-    });
+  constructor(data: Partial<UserData>) {
+    this.data = {
+      ...this.data,
+      ...data
+    };
   }
 
   async save() {
@@ -32,20 +34,13 @@ module.exports = class User {
   }
 
   async find() {
-    const where = {};
-    const {
-      email
-    } = this.data;
-
-    if (email) {
-      where.email = email;
-    }
-
     const user = await DBConnection
       .connection
       .user
       .findFirst({
-        where
+        where: {
+          email: this.data.email
+        }
       });
 
     return user;

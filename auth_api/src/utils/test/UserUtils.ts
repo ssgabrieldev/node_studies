@@ -1,4 +1,4 @@
-module.exports = class UserUtils {
+export default class UserUtils {
   static mock() {
     return ({
       id: Math.random(),

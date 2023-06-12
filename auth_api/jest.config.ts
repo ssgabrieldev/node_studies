@@ -1,4 +1,4 @@
-{
+export default {
   "clearMocks": true,
   "collectCoverage": true,
   "coverageDirectory": "coverage",
@@ -8,5 +8,8 @@
     "global": {
       "lines": 100
     }
+  },
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
   }
 }

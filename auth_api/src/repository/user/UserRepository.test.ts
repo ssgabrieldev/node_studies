@@ -1,18 +1,16 @@
-const DBConection = require("../../db/DBConetion");
-const MockDBConnection = require("../../db/MockDBConnection");
-const User = require("../../model/user/User");
-const UserUtils = require("../../utils/test/UserUtils");
-const UserRepository = require("./UserRepository");
+import DBConection from "../../db/DBConetion";
+import User from "../../model/user/User";
+import UserData from "../../model/user/interface";
+import UserUtils from "../../utils/test/UserUtils";
+import UserRepository from "./UserRepository";
 
 describe("User Repository", () => {
-  DBConection.setConnection(MockDBConnection);
-
-  it("should not fail if user not exists", async () => {
+  it("should insert if user not exists", async () => {
     const data = UserUtils.mock();
     jest.spyOn(User.prototype, "find")
-      .mockReturnValue(null);
-    jest.spyOn(DBConection.connection.user, "create")
-      .mockReturnValue(data);
+      .mockImplementation(async () => null);
+    jest.spyOn(User.prototype, "save")
+      .mockImplementation((async () => new User(data)));
 
     const userRepository = new UserRepository(
       User
@@ -20,7 +18,7 @@ describe("User Repository", () => {
 
     const result = await userRepository.insert(data);
 
-    Object.keys(result).forEach((key) => {
+    (Object.keys(result) as (keyof UserData)[]).forEach((key) => {
       expect(result[key])
         .toBe(data[key]);
     });
@@ -29,7 +27,7 @@ describe("User Repository", () => {
   it("should fail if user exists", async () => {
     const data = UserUtils.mock();
     jest.spyOn(User.prototype, "find")
-      .mockReturnValue(data);
+      .mockImplementation(async () => data);
 
     const userRepository = new UserRepository(
       User

@@ -1,16 +1,17 @@
-const SignUpController = require("./SignUpController");
-const UserRepository = require("../../repository/user/UserRepository");
-const UserUtils = require("../../utils/test/UserUtils");
-const { USER_EXISTS } = require("../../consts");
+import SignUpController from "./SignUpController";
+import UserRepository from "../../repository/user/UserRepository";
+import UserUtils from "../../utils/test/UserUtils";
+import { USER_EXISTS } from "../../consts";
+import User from "../../model/user/User";
 
 describe("Sign Up Controller", () => {
-  const userRepository = new UserRepository({});
+  const userRepository = new UserRepository(({}) as typeof User);
   const {
     id,
     password,
     ...data
   } = UserUtils.mock();
-  const req = {
+  const req: any = {
     body: {
       user: {
         ...data,
@@ -18,7 +19,7 @@ describe("Sign Up Controller", () => {
       }
     }
   };
-  const res = {
+  const res: any = {
     status: jest.fn(() => res),
     json: jest.fn()
   };
